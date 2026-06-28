@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 # STEP 1: RAW DATA INGESTION (Simulating a messy client database dump)
-print("📦 Step 1: Ingesting raw corporate data rows...")
+print(" Step 1: Ingesting raw corporate data rows...")
 
 raw_corporate_data = {
     "Account_ID": ["ACC_101", "ACC_102", "ACC_103", "ACC_104", "ACC_105", "ACC_106"],
@@ -22,7 +22,7 @@ df = pd.DataFrame(raw_corporate_data)
 
 
 # STEP 2: ENTERPRISE DATA CLEANING & PREPROCESSING
-print("🧹 Step 2: Running data sanitization and median imputation...")
+print(" Step 2: Running data sanitization and median imputation...")
 
 # Clean the "Ad_Spend" column (Remove '$' and ',', convert to float numeric type)
 df["Ad_Spend"] = pd.to_numeric(df["Ad_Spend"].astype(str).str.replace(r'[\$,]', '', regex=True), errors='coerce')
@@ -39,7 +39,7 @@ print("⚙️ Step 3: Engineering corporate target labels...")
 df["Is_High_Value"] = np.where(df["Quarterly_Revenue"] > 30000, 1, 0)
 
 # STEP 4: REGRESSION PIPELINE (Predicting Next-Quarter Revenue)
-print("🔮 Step 4: Deploying Multi-Variable Linear Regression Model...")
+print(" Step 4: Deploying Multi-Variable Linear Regression Model...")
 
 # Features for predicting revenue: Ad_Spend and Platform_Engagement_Hours
 X_reg = df[["Ad_Spend", "Platform_Engagement_Hours"]].values
@@ -55,7 +55,7 @@ reg_r2 = reg_model.score(X_reg, y_reg)
 
 
 # STEP 5: CLASSIFICATION PIPELINE (Predicting VIP High-Value Accounts)
-print("🚨 Step 5: Deploying Logistic Regression Classifier...")
+print(" Step 5: Deploying Logistic Regression Classifier...")
 
 # Features for classification: Platform_Engagement_Hours and Support_Tickets_Logged
 X_clf = df[["Platform_Engagement_Hours", "Support_Tickets_Logged"]].values
@@ -69,7 +69,7 @@ clf_model.fit(X_clf, y_clf)
 clf_accuracy = clf_model.score(X_clf, y_clf)
 
 # STEP 6: PRODUCTION FORECASTING & DEPLOYMENT TEST
-print("\n🚀 Step 6: Pipeline operational! Running production forecast query...")
+print("\n Step 6: Pipeline operational! Running production forecast query...")
 
 # A new prospective client comes in:
 # They will spend $7,500 on ads and have 175 engagement hours.
@@ -91,16 +91,16 @@ predicted_proba = clf_model.predict_proba(new_client_clf_features)[0]
 print("\n" + "="*60)
 print("              GLOBAL DATA OPERATIONS REPORT                  ")
 print("="*60)
-print(f"📊 Regression Model Reliability (R² Score): {reg_r2:.4f}")
-print(f"🎯 Classification Model Accuracy Score:    {clf_accuracy * 100:.1f}%")
+print(f" Regression Model Reliability (R² Score): {reg_r2:.4f}")
+print(f" Classification Model Accuracy Score:    {clf_accuracy * 100:.1f}%")
 print("-" * 60)
-print("🔮 PROSPECTIVE CLIENT ASSIGNMENT ANALYSIS:")
+print(" PROSPECTIVE CLIENT ASSIGNMENT ANALYSIS:")
 print(f"   -> Predicted Revenue Yield:            ${predicted_revenue[0]:,.2f}")
 
 if predicted_class[0] == 1:
-    print(f"   -> Status Flag:                         [👑 HIGH-VALUE ACCOUNT]")
+    print(f"   -> Status Flag:                         [ HIGH-VALUE ACCOUNT]")
     print(f"   -> Assignment Confidence:               {predicted_proba[1] * 100:.1f}% probability")
 else:
-    print(f"   -> Status Flag:                         [💼 STANDARD ACCOUNT]")
+    print(f"   -> Status Flag:                         [ STANDARD ACCOUNT]")
     print(f"   -> Assignment Confidence:               {predicted_proba[0] * 100:.1f}% probability")
 print("="*60 + "\n")
